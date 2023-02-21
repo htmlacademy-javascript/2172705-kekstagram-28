@@ -46,55 +46,42 @@ const MESSAGES = [
 
 const POSTS_COUNT = 25;
 
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
+let postId = 1;
+let commentId = 1;
+
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+const createMessage = (messages) => {
+  const message = Array.from({length: getRandomInteger(1, 2)}, () => messages[getRandomInteger(0, messages.length - 1)]);
+
+  return [...new Set(message)].join(' ');
 };
 
-const createIdGenerator = () => {
-  let lastIdValue = 0;
-  return function () {
-    lastIdValue++;
-    return lastIdValue;
+const createComment = () => {
+  const comment = {
+    id: commentId,
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    message: createMessage(MESSAGES),
+    name: NAMES[getRandomInteger(0, NAMES.length - 1)]
   };
+
+  commentId++;
+
+  return comment;
 };
 
-const createRandomValueFromRangeGenerator = (min, max) => {
-  const createdValues = [];
-
-  return function () {
-    if (createdValues.length === (max - min + 1)) {
-      return null;
-    }
-    let newValue = getRandomInteger(min, max);
-    while (createdValues.includes(newValue)) {
-      newValue = getRandomInteger(min, max);
-    }
-    createdValues.push(newValue);
-
-    return newValue;
+const createPost = () => {
+  const post = {
+    id: postId,
+    url: `photos/${postId}.jpg`,
+    description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
+    likes: getRandomInteger(15, 200),
+    comments: Array.from({length: getRandomInteger(1, 6)}, createComment)
   };
+
+  postId++;
+
+  return post;
 };
 
-const generateCommentId = createIdGenerator();
-const generatePostId = createIdGenerator();
-const generateUrlRandomValue = createRandomValueFromRangeGenerator(1, POSTS_COUNT);
-
-const createComment = () => ({
-  id: generateCommentId(),
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.png`,
-  message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
-  name: NAMES[getRandomInteger(0, NAMES.length - 1)]
-});
-
-const createPost = () => ({
-  id: generatePostId(),
-  url: `photos/${generateUrlRandomValue()}.jpg`,
-  description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
-  likes: getRandomInteger(15, 200),
-  comments: Array.from({length: getRandomInteger(1, 6)}, createComment)
-});
-
-const posts = Array.from({length: POSTS_COUNT}, createPost);
+const posts = () => Array.from({length: POSTS_COUNT}, createPost);
