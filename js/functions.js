@@ -23,4 +23,3 @@ const addSymbols = (string, length, extension) => {
 
   return string;
 };
-
