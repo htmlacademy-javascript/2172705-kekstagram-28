@@ -1,5 +1,3 @@
-const checkLengthString = (string, length) => String(string).length <= length;
-
 const checkPalindrome = (string) => {
   string = String(string).toLowerCase().replaceAll(' ', '');
   return string === string.split('').reverse().join('');
@@ -23,3 +21,14 @@ const addSymbols = (string, length, extension) => {
 
   return string;
 };
+
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+export {
+  checkPalindrome,
+  getInteger,
+  addSymbols,
+  getRandomInteger
+};
+
+console.log("Загрузился модуль util.js");
