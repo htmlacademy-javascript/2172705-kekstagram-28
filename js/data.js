@@ -1,4 +1,4 @@
-import {getRandomInteger} from './util.js';
+import {getRandomInteger} from './utils.js';
 
 const NAMES = [
   'Павел Позняк',
@@ -86,8 +86,4 @@ const createPost = () => {
 
 const createPosts = () => Array.from({length: POSTS_COUNT}, createPost);
 
-export {
-  createPosts
-};
-
-console.log("Загрузился модуль data.js");
+export {createPosts};

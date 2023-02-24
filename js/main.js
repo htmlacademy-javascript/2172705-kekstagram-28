@@ -1,4 +1,3 @@
-import './data.js';
-import './form-validation.js';
+import {createPosts} from './data.js';
 
-console.log("Все модули загрузились в точку входа main.js");
+createPosts();
