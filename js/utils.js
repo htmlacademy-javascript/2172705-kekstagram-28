@@ -1,5 +1,3 @@
-const checkLengthString = (string, length) => String(string).length <= length;
-
 const checkPalindrome = (string) => {
   string = String(string).toLowerCase().replaceAll(' ', '');
   return string === string.split('').reverse().join('');
@@ -22,4 +20,16 @@ const addSymbols = (string, length, extension) => {
   }
 
   return string;
+};
+
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+const checkLengthString = (string, length) => String(string).length <= length;
+
+export {
+  checkPalindrome,
+  getInteger,
+  getRandomInteger,
+  addSymbols,
+  checkLengthString
 };
