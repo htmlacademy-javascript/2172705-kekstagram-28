@@ -46,8 +46,6 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const POSTS_COUNT = 25;
-
 let postId = 1;
 let commentId = 1;
 
@@ -57,7 +55,7 @@ const createMessage = (messages) => {
   return [...new Set(message)].join(' ');
 };
 
-const createComment = () => {
+const createCommentData = () => {
   const comment = {
     id: commentId,
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
@@ -70,13 +68,13 @@ const createComment = () => {
   return comment;
 };
 
-const createPost = () => {
+const createPostData = () => {
   const post = {
     id: postId,
     url: `photos/${postId}.jpg`,
     description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
     likes: getRandomInteger(15, 200),
-    comments: Array.from({length: getRandomInteger(1, 6)}, createComment)
+    comments: Array.from({length: getRandomInteger(1, 6)}, createCommentData)
   };
 
   postId++;
@@ -84,6 +82,6 @@ const createPost = () => {
   return post;
 };
 
-const createPosts = () => Array.from({length: POSTS_COUNT}, createPost);
+const createPostsDataset = (count) => Array.from({length: count}, createPostData);
 
-export {createPosts};
+export {createPostsDataset};
