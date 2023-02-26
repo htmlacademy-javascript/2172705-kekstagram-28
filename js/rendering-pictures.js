@@ -1,19 +1,21 @@
 import {createPostsDataset} from './data.js';
 
 const POSTS_COUNT = 25;
-
-const templateDocumentFragment = document.querySelector('#picture').content;
-const pictureTemplate = templateDocumentFragment.querySelector('.picture');
-const picturesList = document.querySelector('.pictures');
 const postsDataset = createPostsDataset(POSTS_COUNT);
-const picturesFragmentContainer = document.createDocumentFragment();
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const picturesList = document.querySelector('.pictures');
 
-postsDataset.forEach(({url, likes, comments}) => {
+const createPicture = (item) => {
   const picture = pictureTemplate.cloneNode(true);
-  picture.querySelector('.picture__img').src = url;
-  picture.querySelector('.picture__comments').textContent = comments.length;
-  picture.querySelector('.picture__likes').textContent = likes;
-  picturesFragmentContainer.append(picture);
-});
+  picture.querySelector('.picture__img').src = item.url;
+  picture.querySelector('.picture__comments').textContent = item.comments.length;
+  picture.querySelector('.picture__likes').textContent = item.likes;
 
-picturesList.append(picturesFragmentContainer);
+  return picture;
+};
+
+const renderPictures = () => {
+  postsDataset.forEach((item) => picturesList.append(createPicture(item)));
+};
+
+export {renderPictures};

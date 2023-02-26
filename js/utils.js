@@ -3,20 +3,13 @@ const checkPalindrome = (string) => {
   return string === string.split('').reverse().join('');
 };
 
-const getInteger = (string) => {
-  string = String(string).replace(/\D/g, '');
-  return parseInt(string, 10);
-};
+const getInteger = (string) => parseInt(String(string).replace(/\D/g, ''), 10);
 
 const addSymbols = (string, length, extension) => {
   string = String(string);
-  if (string.length >= length) {
-    return string;
-  }
 
   while (string.length < length) {
-    const extensionLength = length - string.length;
-    string = extension.slice(0, extensionLength) + string;
+    string = extension.slice(0, length - string.length) + string;
   }
 
   return string;
