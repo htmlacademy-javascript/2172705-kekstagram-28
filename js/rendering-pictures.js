@@ -1,28 +1,27 @@
 import {createPostsDataset} from './data.js';
-import {openBigPictureModal} from './open-big-picture.js';
+import {openBigPicture} from './open-big-picture.js';
 
-const POSTS_COUNT = 25;
-const COMMENTS_STEP_COUNT = 5;
+const postsDataset = createPostsDataset();
 
-const postsDataset = createPostsDataset(POSTS_COUNT);
-const pictureTemplateNode = document.querySelector('#picture').content.querySelector('.picture');
-const picturesListNode = document.querySelector('.pictures');
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const picturesList = document.querySelector('.pictures');
 
-const createPicture = (postData) => {
-  const picture = pictureTemplateNode.cloneNode(true);
-  picture.querySelector('.picture__img').src = postData.url;
-  picture.querySelector('.picture__comments').textContent = postData.comments.length;
-  picture.querySelector('.picture__likes').textContent = postData.likes;
+const createPicture = (data) => {
+  const picture = pictureTemplate.cloneNode(true);
+  picture.querySelector('.picture__img').src = data.url;
+  picture.querySelector('.picture__comments').textContent = data.comments.length;
+  picture.querySelector('.picture__likes').textContent = data.likes;
 
   picture.addEventListener('click', (evt) => {
-    openBigPictureModal(evt, postData, COMMENTS_STEP_COUNT);
+    evt.preventDefault();
+    openBigPicture(data);
   });
 
   return picture;
 };
 
 const renderPictures = () => {
-  postsDataset.forEach((postData) => picturesListNode.append(createPicture(postData)));
+  postsDataset.forEach((data) => picturesList.append(createPicture(data)));
 };
 
 export {renderPictures};

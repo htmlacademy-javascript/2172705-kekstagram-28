@@ -46,6 +46,8 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
+const POSTS_COUNT = 25;
+
 let postId = 1;
 let commentId = 1;
 
@@ -74,7 +76,7 @@ const createPostData = () => {
     url: `photos/${postId}.jpg`,
     description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
     likes: getRandomInteger(15, 200),
-    comments: Array.from({length: getRandomInteger(20, 31)}, createCommentData)
+    comments: Array.from({length: getRandomInteger(6, 11)}, createCommentData)
   };
 
   postId++;
@@ -82,6 +84,6 @@ const createPostData = () => {
   return post;
 };
 
-const createPostsDataset = (count) => Array.from({length: count}, createPostData);
+const createPostsDataset = () => Array.from({length: POSTS_COUNT}, createPostData);
 
 export {createPostsDataset};
