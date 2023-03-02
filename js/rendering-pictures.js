@@ -1,21 +1,27 @@
 import {createPostsDataset} from './data.js';
+import {openBigPicture} from './open-big-picture.js';
 
-const POSTS_COUNT = 25;
-const postsDataset = createPostsDataset(POSTS_COUNT);
+const postsDataset = createPostsDataset();
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesList = document.querySelector('.pictures');
 
-const createPicture = (item) => {
+const createPicture = (data) => {
   const picture = pictureTemplate.cloneNode(true);
-  picture.querySelector('.picture__img').src = item.url;
-  picture.querySelector('.picture__comments').textContent = item.comments.length;
-  picture.querySelector('.picture__likes').textContent = item.likes;
+  picture.querySelector('.picture__img').src = data.url;
+  picture.querySelector('.picture__comments').textContent = data.comments.length;
+  picture.querySelector('.picture__likes').textContent = data.likes;
+
+  picture.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    openBigPicture(data);
+  });
 
   return picture;
 };
 
 const renderPictures = () => {
-  postsDataset.forEach((item) => picturesList.append(createPicture(item)));
+  postsDataset.forEach((data) => picturesList.append(createPicture(data)));
 };
 
 export {renderPictures};
