@@ -76,7 +76,7 @@ const createPostData = () => {
     url: `photos/${postId}.jpg`,
     description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
     likes: getRandomInteger(15, 200),
-    comments: Array.from({length: getRandomInteger(6, 11)}, createCommentData)
+    comments: Array.from({length: getRandomInteger(3, 11)}, createCommentData)
   };
 
   postId++;
