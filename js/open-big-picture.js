@@ -10,10 +10,10 @@ const commentsList = document.querySelector('.social__comments');
 const commentItem = document.querySelector('.social__comment');
 const commentsLoader = document.querySelector('.comments-loader');
 
-let commentsCounter = 0;
-let totalCommentsQuantity = 0;
 const COMMENTS_STEP_VALUE = 5;
 
+let commentsCounter = 0;
+let totalCommentsQuantity = 0;
 let commentsDataset = [];
 
 const onCloseButtonClick = () => {
