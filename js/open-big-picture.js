@@ -71,7 +71,7 @@ const fillBigPicture = (data) => {
   pictureCaption.textContent = data.description;
 };
 
-function openBigPicture (data) {
+const openBigPicture = (data) => {
   commentsList.innerHTML = '';
 
   totalCommentsQuantity = data.comments.length;
@@ -86,7 +86,7 @@ function openBigPicture (data) {
   fillBigPicture(data);
   renderComments();
   createListeners();
-}
+};
 
 function closeBigPicture () {
   pictureContainer.classList.add('hidden');
