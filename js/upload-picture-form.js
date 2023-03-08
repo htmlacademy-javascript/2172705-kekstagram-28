@@ -28,9 +28,15 @@ const checkHashtags = () => {
 
 const checkComment = () => checkStringLength(commentInput.value, COMMENT_MAX_LENGTH);
 
-const pristineSetup = new Pristine(pictureUploadForm);
-pristineSetup.addValidator(hashtagInput, checkHashtags);
-pristineSetup.addValidator(commentInput, checkComment);
+const pristineSetup = new Pristine(pictureUploadForm, {
+  classTo: 'img-upload__form',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'p',
+  errorTextClass: 'form__error'
+});
+
+pristineSetup.addValidator(hashtagInput, checkHashtags, 'Неверно заполнено поле');
+pristineSetup.addValidator(commentInput, checkComment, 'Не более 140 символов');
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
