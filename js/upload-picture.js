@@ -1,4 +1,4 @@
-import {validateUploadPictureForm} from './upload-picture-form-validation.js';
+import {validateUploadPictureForm} from './upload-picture-validation.js';
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
 
