@@ -1,16 +1,16 @@
+const COMMENTS_STEP_VALUE = 5;
+
 const pictureContainer = document.querySelector('.big-picture');
 const pictureImage = document.querySelector('.big-picture__img img');
 const pictureCaption = document.querySelector('.social__caption');
 const pictureLikesCount = document.querySelector('.likes-count');
-const pictureCloseButton = document.querySelector('.big-picture__cancel');
+const closeButton = document.querySelector('.big-picture__cancel');
 
 const commentsContainer = document.querySelector('.social__comment-count');
 const commentsCount = document.querySelector('.comments-count');
 const commentsList = document.querySelector('.social__comments');
 const commentItem = document.querySelector('.social__comment');
 const commentsLoader = document.querySelector('.comments-loader');
-
-const COMMENTS_STEP_VALUE = 5;
 
 let commentsCounter = 0;
 let totalCommentsQuantity = 0;
@@ -35,14 +35,14 @@ const onCommentsLoaderButtonClick = () => {
 };
 
 const createListeners = () => {
-  pictureCloseButton.addEventListener('click', onCloseButtonClick);
+  closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
 
   commentsLoader.addEventListener('click', onCommentsLoaderButtonClick);
 };
 
 const removeListeners = () => {
-  pictureCloseButton.removeEventListener('click', onCloseButtonClick);
+  closeButton.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
 
   commentsLoader.removeEventListener('click', onCommentsLoaderButtonClick);

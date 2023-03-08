@@ -19,10 +19,13 @@ const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1
 
 const checkStringLength = (string, length) => String(string).length <= length;
 
+const findDuplicates = (elements) => elements.filter((item, index) => elements.indexOf(item) !== index);
+
 export {
   checkPalindrome,
   getInteger,
   getRandomInteger,
   addSymbols,
-  checkStringLength
+  checkStringLength,
+  findDuplicates
 };
