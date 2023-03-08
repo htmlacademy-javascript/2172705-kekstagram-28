@@ -16,7 +16,7 @@ const noPictureFilterInput = document.querySelector('.effects__radio[value=none]
 const hashtagInput = document.querySelector('.img-upload__text .text__hashtags');
 const commentInput = document.querySelector('.img-upload__text .text__description');
 
-const onUploadFormSubmit = (evt) => {
+const onUploadPictureFormSubmit = (evt) => {
   if (!validateUploadPictureForm()) {
     evt.preventDefault();
   }
@@ -40,7 +40,7 @@ const onDocumentKeydown = (evt) => {
 };
 
 const createListeners = () => {
-  pictureUploadForm.addEventListener('submit', onUploadFormSubmit);
+  pictureUploadForm.addEventListener('submit', onUploadPictureFormSubmit);
   effectsList.addEventListener('change', onEffectInputClick);
 
   closeButton.addEventListener('click', onCloseButtonClick);
