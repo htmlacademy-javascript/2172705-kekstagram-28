@@ -1,10 +1,8 @@
-import {checkStringLength, findDuplicates} from './utils.js';
+import {findDuplicates} from './utils.js';
 
-const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_REG_EXP = /#[\dа-яa-z]{1,19}\s/gi;
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
-const commentInput = document.querySelector('.img-upload__text .text__description');
 const hashtagInput = document.querySelector('.img-upload__text .text__hashtags');
 
 const checkHashtags = () => {
@@ -21,8 +19,6 @@ const checkHashtags = () => {
   return true;
 };
 
-const checkComment = () => checkStringLength(commentInput.value, COMMENT_MAX_LENGTH);
-
 const pristineSetup = new Pristine(pictureUploadForm, {
   classTo: 'img-upload__form',
   errorTextParent: 'img-upload__field-wrapper',
@@ -31,7 +27,6 @@ const pristineSetup = new Pristine(pictureUploadForm, {
 });
 
 pristineSetup.addValidator(hashtagInput, checkHashtags, 'Поле заполнено неверно');
-pristineSetup.addValidator(commentInput, checkComment, 'Не более 140 символов');
 
 const validateUploadPictureForm = () => pristineSetup.validate();
 

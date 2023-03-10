@@ -1,20 +1,12 @@
 import {validateUploadPictureForm} from './upload-picture-validation.js';
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
-
 const pictureUploadInput = document.querySelector('#upload-file');
 const pictureUploadPreview = document.querySelector('.img-upload__preview img');
 const pictureEdit = document.querySelector('.img-upload__overlay');
 const closeButton = document.querySelector('.img-upload__cancel');
 
-const pictureScaleInput = document.querySelector('.scale__control--value');
-
 const effectsList = document.querySelector('.effects__list');
-const effectLevelInput = document.querySelector('.effect-level__value');
-const noPictureFilterInput = document.querySelector('.effects__radio[value=none]');
-
-const hashtagInput = document.querySelector('.img-upload__text .text__hashtags');
-const commentInput = document.querySelector('.img-upload__text .text__description');
 
 const onUploadPictureFormSubmit = (evt) => {
   if (!validateUploadPictureForm()) {
@@ -29,9 +21,7 @@ const onEffectInputClick = (evt) => {
   }
 };
 
-const onCloseButtonClick = () => {
-  closePictureUpload();
-};
+const onCloseButtonClick = () => closePictureUpload();
 
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape' && !evt.target.closest('.text__hashtags') && !evt.target.closest('.text__description')) {
@@ -39,35 +29,28 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const createListeners = () => {
+const addListeners = () => {
   pictureUploadForm.addEventListener('submit', onUploadPictureFormSubmit);
   effectsList.addEventListener('change', onEffectInputClick);
-
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const removeListeners = () => {
+  pictureUploadForm.removeEventListener('submit', onUploadPictureFormSubmit);
   effectsList.removeEventListener('change', onEffectInputClick);
-
   closeButton.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 const defaultSetupPictureUpload = () => {
-  pictureScaleInput.value = '100%';
-  pictureUploadPreview.style.transform = '';
-  noPictureFilterInput.checked = 'true';
-  effectLevelInput.value = '';
-  pictureUploadPreview.style.filter = '';
+  pictureUploadForm.reset();
+  pictureUploadPreview.style = null;
   pictureUploadPreview.className = 'effects__preview--none';
-  hashtagInput.value = '';
-  commentInput.value = '';
 };
 
 function openPictureUpload () {
-  createListeners();
-  defaultSetupPictureUpload();
+  addListeners();
 
   document.body.classList.add('modal-open');
   pictureEdit.classList.remove('hidden');
@@ -77,7 +60,6 @@ function closePictureUpload () {
   removeListeners();
   defaultSetupPictureUpload();
 
-  pictureUploadInput.value = '';
   document.body.classList.remove('modal-open');
   pictureEdit.classList.add('hidden');
 }

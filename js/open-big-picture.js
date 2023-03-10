@@ -34,7 +34,7 @@ const onCommentsLoaderButtonClick = () => {
   renderComments();
 };
 
-const createListeners = () => {
+const addListeners = () => {
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
 
@@ -79,13 +79,14 @@ const openBigPicture = (data) => {
 
   pictureContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
+
   if (totalCommentsQuantity <= COMMENTS_STEP_VALUE) {
     commentsLoader.classList.add('hidden');
   }
 
   fillBigPicture(data);
   renderComments();
-  createListeners();
+  addListeners();
 };
 
 function closeBigPicture () {
