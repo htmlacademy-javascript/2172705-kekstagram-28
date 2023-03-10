@@ -8,7 +8,7 @@ const hashtagInput = document.querySelector('.img-upload__text .text__hashtags')
 const checkHashtags = () => {
   const hashtagString = hashtagInput.value.trim();
 
-  if (hashtagInput.value === '') {
+  if (!hashtagInput.value) {
     return true;
   }
 
