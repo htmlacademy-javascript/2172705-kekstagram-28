@@ -1,10 +1,15 @@
-import {validateUploadPictureForm} from './upload-picture-validation.js';
-import {createSlider, setupSlider, destroySlider} from './upload-picture-slider.js';
+import { validateUploadPictureForm } from './upload-picture-validation.js';
+import { createSlider, setupSlider, destroySlider } from './upload-picture-slider.js';
+import { sendData } from './server-data.js';
 
+const picturePreviewContainer = document.querySelector('.img-upload');
 const pictureUploadForm = document.querySelector('.img-upload__form');
+const pictureUploadButton = document.querySelector('.img-upload__start');
 const pictureUploadInput = document.querySelector('#upload-file');
+const pictureUploadLabel = document.querySelector('.img-upload__label');
 const pictureUploadPreview = document.querySelector('.img-upload__preview img');
 const pictureEdit = document.querySelector('.img-upload__overlay');
+const submitButton = document.querySelector('.img-upload__submit');
 const closeButton = document.querySelector('.img-upload__cancel');
 
 const effectsList = document.querySelector('.effects__list');
@@ -13,6 +18,46 @@ const checkedEffectInput = document.querySelector('.effects__radio[checked]');
 const pictureScaleInput = document.querySelector('.scale__control--value');
 const pictureScaleDownButton = document.querySelector('.scale__control--smaller');
 const pictureScaleUpButton = document.querySelector('.scale__control--bigger');
+
+const onUploadPictureFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  if (validateUploadPictureForm()) {
+    blockSubmitButton();
+    sendData(new FormData(evt.target))
+      .then(() => {
+        showMessage(createSuccessMessage, 'success');
+        const temporaryStorageOfNode = pictureUploadInput;
+        pictureUploadInput.remove(); // !Для исключения поля ввода из reset формы
+        defaultSetupPictureUpload();
+        setupSlider('none');
+        pictureUploadButton.insertBefore(temporaryStorageOfNode, pictureUploadLabel);
+      })
+      .catch(() => {
+        showMessage(createErrorMessage, 'error');
+      })
+      .finally(() => unblockSubmitButton());
+  } else {
+    showMessage(createErrorMessage, 'error');
+  }
+};
+
+const onMessageModalKeydown = (evt) => {
+  evt.stopPropagation();
+  if (evt.key === 'Escape') {
+    closeMessage();
+  }
+};
+
+const onMessageModalClick = (evt) => {
+  if (!evt.target.closest('.success__inner')) {
+    closeMessage();
+  }
+};
+
+const onMessageButtonClick = () => {
+  closeMessage();
+};
 
 const onScaleDownButtonClick = () => {
   if (parseInt(pictureScaleInput.value, 10) > 25) {
@@ -25,12 +70,6 @@ const onScaleUpButtonClick = () => {
   if (parseInt(pictureScaleInput.value, 10) < 100) {
     pictureScaleInput.value = `${parseInt(pictureScaleInput.value, 10) + 25}%`;
     pictureUploadPreview.style.transform = `scale(${parseInt(pictureScaleInput.value, 10) / 100})`;
-  }
-};
-
-const onUploadPictureFormSubmit = (evt) => {
-  if (!validateUploadPictureForm()) {
-    evt.preventDefault();
   }
 };
 
@@ -69,24 +108,62 @@ const removeListeners = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
-const defaultSetupPictureUpload = () => {
+const addMessageListeners = (type) => {
+  document.querySelector(`.${type}__button`).addEventListener('click', onMessageButtonClick);
+  document.querySelector(`.${type}`).addEventListener('click', onMessageModalClick);
+  document.querySelector(`.${type}`).addEventListener('keydown', onMessageModalKeydown);
+};
+
+function createSuccessMessage() {
+  return document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+}
+
+function createErrorMessage() {
+  return document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+}
+
+function showMessage(messageBuilder, messageType) {
+  picturePreviewContainer.append(messageBuilder());
+  document.querySelector(`.${messageType}__button`).focus();
+  addMessageListeners(messageType);
+}
+
+function closeMessage() {
+  if (document.querySelector('.success')) {
+    document.querySelector('.success').remove();
+  }
+  if (document.querySelector('.error')) {
+    document.querySelector('.error').remove();
+  }
+}
+
+function blockSubmitButton() {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+}
+
+function unblockSubmitButton() {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+}
+
+function defaultSetupPictureUpload() {
   pictureUploadForm.reset();
   pictureUploadPreview.style = null;
   pictureUploadPreview.className = 'effects__preview--none';
-};
+  pictureScaleInput.defaultValue = '100%';
+}
 
-function openPictureUpload () {
+function openPictureUpload() {
   addListeners();
   createSlider();
   setupSlider(checkedEffectInput.value);
-
-  pictureScaleInput.value = '100%';
 
   document.body.classList.add('modal-open');
   pictureEdit.classList.remove('hidden');
 }
 
-function closePictureUpload () {
+function closePictureUpload() {
   removeListeners();
   destroySlider();
   defaultSetupPictureUpload();
@@ -97,6 +174,7 @@ function closePictureUpload () {
 
 const initUploadPictureModule = () => {
   pictureUploadInput.addEventListener('change', openPictureUpload);
+  defaultSetupPictureUpload();
 };
 
-export {initUploadPictureModule};
+export { initUploadPictureModule };

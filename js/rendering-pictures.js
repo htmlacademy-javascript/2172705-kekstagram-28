@@ -1,7 +1,4 @@
-import {createPostsDataset} from './data.js';
-import {openBigPicture} from './open-big-picture.js';
-
-const postsDataset = createPostsDataset();
+import { openBigPicture } from './open-big-picture.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesList = document.querySelector('.pictures');
@@ -20,8 +17,8 @@ const createPicture = (data) => {
   return picture;
 };
 
-const renderPictures = () => {
-  postsDataset.forEach((data) => picturesList.append(createPicture(data)));
+const renderPictures = (dataset) => {
+  dataset.forEach((data) => picturesList.append(createPicture(data)));
 };
 
-export {renderPictures};
+export { renderPictures };

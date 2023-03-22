@@ -1,4 +1,4 @@
-import {findDuplicates} from './utils.js';
+import { findDuplicates } from './utils.js';
 
 const HASHTAG_REG_EXP = /#[\dа-яa-z]{1,19}\s/gi;
 
@@ -30,4 +30,4 @@ pristineSetup.addValidator(hashtagInput, checkHashtags, 'Поле заполне
 
 const validateUploadPictureForm = () => pristineSetup.validate();
 
-export {validateUploadPictureForm};
+export { validateUploadPictureForm };
