@@ -13,9 +13,7 @@ const onMessageModalClick = (evt) => {
   }
 };
 
-const onMessageButtonClick = () => {
-  closeMessage();
-};
+const onMessageButtonClick = () => closeMessage();
 
 const addMessageListeners = (type) => {
   document.querySelector(`.${type}__button`).addEventListener('click', onMessageButtonClick);
