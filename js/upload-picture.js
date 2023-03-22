@@ -1,12 +1,10 @@
 import { validateUploadPictureForm } from './upload-picture-validation.js';
 import { createSlider, setupSlider, destroySlider } from './upload-picture-slider.js';
+import { showMessage, createSuccessMessage, createErrorMessage } from './upload-picture-fetch-messages.js';
 import { sendData } from './server-data.js';
 
-const picturePreviewContainer = document.querySelector('.img-upload');
 const pictureUploadForm = document.querySelector('.img-upload__form');
-const pictureUploadButton = document.querySelector('.img-upload__start');
 const pictureUploadInput = document.querySelector('#upload-file');
-const pictureUploadLabel = document.querySelector('.img-upload__label');
 const pictureUploadPreview = document.querySelector('.img-upload__preview img');
 const pictureEdit = document.querySelector('.img-upload__overlay');
 const submitButton = document.querySelector('.img-upload__submit');
@@ -27,11 +25,7 @@ const onUploadPictureFormSubmit = (evt) => {
     sendData(new FormData(evt.target))
       .then(() => {
         showMessage(createSuccessMessage, 'success');
-        const temporaryStorageOfNode = pictureUploadInput;
-        pictureUploadInput.remove(); // !Для исключения поля ввода из reset формы
-        defaultSetupPictureUpload();
-        setupSlider('none');
-        pictureUploadButton.insertBefore(temporaryStorageOfNode, pictureUploadLabel);
+        closePictureUpload();
       })
       .catch(() => {
         showMessage(createErrorMessage, 'error');
@@ -40,23 +34,6 @@ const onUploadPictureFormSubmit = (evt) => {
   } else {
     showMessage(createErrorMessage, 'error');
   }
-};
-
-const onMessageModalKeydown = (evt) => {
-  evt.stopPropagation();
-  if (evt.key === 'Escape') {
-    closeMessage();
-  }
-};
-
-const onMessageModalClick = (evt) => {
-  if (!evt.target.closest('.success__inner')) {
-    closeMessage();
-  }
-};
-
-const onMessageButtonClick = () => {
-  closeMessage();
 };
 
 const onScaleDownButtonClick = () => {
@@ -107,35 +84,6 @@ const removeListeners = () => {
   closeButton.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
 };
-
-const addMessageListeners = (type) => {
-  document.querySelector(`.${type}__button`).addEventListener('click', onMessageButtonClick);
-  document.querySelector(`.${type}`).addEventListener('click', onMessageModalClick);
-  document.querySelector(`.${type}`).addEventListener('keydown', onMessageModalKeydown);
-};
-
-function createSuccessMessage() {
-  return document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-}
-
-function createErrorMessage() {
-  return document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-}
-
-function showMessage(messageBuilder, messageType) {
-  picturePreviewContainer.append(messageBuilder());
-  document.querySelector(`.${messageType}__button`).focus();
-  addMessageListeners(messageType);
-}
-
-function closeMessage() {
-  if (document.querySelector('.success')) {
-    document.querySelector('.success').remove();
-  }
-  if (document.querySelector('.error')) {
-    document.querySelector('.error').remove();
-  }
-}
 
 function blockSubmitButton() {
   submitButton.disabled = true;
