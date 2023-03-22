@@ -59,7 +59,7 @@ const createComment = (data) => {
   return newComment;
 };
 
-function renderComments () {
+function renderComments() {
   commentsDataset.splice(0, COMMENTS_STEP_VALUE).forEach((item) => commentsList.append(createComment(item)));
   commentsContainer.innerHTML = `${commentsCounter} из <span class="comments-count">${totalCommentsQuantity}</span> комментариев`;
 }
@@ -89,7 +89,7 @@ const openBigPicture = (data) => {
   addListeners();
 };
 
-function closeBigPicture () {
+function closeBigPicture() {
   pictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
   commentsLoader.classList.remove('hidden');
@@ -101,4 +101,4 @@ function closeBigPicture () {
   removeListeners();
 }
 
-export {openBigPicture};
+export { openBigPicture };

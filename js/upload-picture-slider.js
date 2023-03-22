@@ -95,4 +95,4 @@ const createSlider = () => {
 
 const destroySlider = () => effectLevelSlider.noUiSlider.destroy();
 
-export {createSlider, setupSlider, destroySlider};
+export { createSlider, setupSlider, destroySlider };
