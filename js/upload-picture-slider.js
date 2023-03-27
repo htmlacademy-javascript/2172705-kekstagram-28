@@ -1,4 +1,4 @@
-const effectSetups = {
+const EffectSetups = {
   CHROME: {
     range: {
       min: 0,
@@ -71,12 +71,12 @@ const setupSlider = (effect) => {
     effectLevelSlider.noUiSlider.off();
     effectLevelSliderContainer.classList.add('hidden');
   } else {
-    updateSlider(effectSetups[effect.toUpperCase()]);
+    updateSlider(EffectSetups[effect.toUpperCase()]);
 
     effectLevelSlider.noUiSlider.off();
     effectLevelSlider.noUiSlider.on('update', () => {
       effectLevelInput.value = effectLevelSlider.noUiSlider.get();
-      pictureUploadPreview.style.filter = `${effectSetups[effect.toUpperCase()].filter}(${effectLevelInput.value + effectSetups[effect.toUpperCase()].unit})`;
+      pictureUploadPreview.style.filter = `${EffectSetups[effect.toUpperCase()].filter}(${effectLevelInput.value + EffectSetups[effect.toUpperCase()].unit})`;
     });
 
     effectLevelSliderContainer.classList.remove('hidden');
