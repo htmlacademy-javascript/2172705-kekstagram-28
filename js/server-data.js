@@ -1,3 +1,5 @@
+import { viewSortFilters } from './sort-filters.js';
+
 const URL = 'https://28.javascript.pages.academy';
 
 const URNs = {
@@ -11,6 +13,7 @@ const processResponse = (url, method, body = null) =>
       if (!response.ok) {
         throw new Error();
       }
+      viewSortFilters();
       return response.json();
     });
 
