@@ -7,11 +7,11 @@ const defaultFilterButton = document.querySelector('#filter-default');
 const randomFilterButton = document.querySelector('#filter-random');
 const discussedFilterButton = document.querySelector('#filter-discussed');
 
-const removeButtonActive = () => document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+const removeButtonActiveClass = () => document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
 
 const getDefaultPostsView = (callback) => {
   defaultFilterButton.addEventListener('click', () => {
-    removeButtonActive();
+    removeButtonActiveClass();
     defaultFilterButton.classList.add('img-filters__button--active');
     callback();
   });
@@ -19,7 +19,7 @@ const getDefaultPostsView = (callback) => {
 
 const getRandomPostsView = (callback) => {
   randomFilterButton.addEventListener('click', () => {
-    removeButtonActive();
+    removeButtonActiveClass();
     randomFilterButton.classList.add('img-filters__button--active');
     callback();
   });
@@ -27,7 +27,7 @@ const getRandomPostsView = (callback) => {
 
 const getDiscussedPostsView = (callback) => {
   discussedFilterButton.addEventListener('click', () => {
-    removeButtonActive();
+    removeButtonActiveClass();
     discussedFilterButton.classList.add('img-filters__button--active');
     callback();
   });
