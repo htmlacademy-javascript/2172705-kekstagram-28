@@ -22,4 +22,15 @@ const showErrorAlert = (text) => {
   setTimeout(() => message.remove(), ALERT_SHOW_TIME);
 };
 
-export { getRandomInteger, findDuplicates, showErrorAlert };
+const compareElements = (first, second, isAscendingOrder = true) => isAscendingOrder ? first - second : second - first;
+
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { getRandomInteger, findDuplicates, showErrorAlert, compareElements, debounce };
