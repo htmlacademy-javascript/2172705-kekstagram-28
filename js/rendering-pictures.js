@@ -1,7 +1,12 @@
 import { openBigPicture } from './open-big-picture.js';
+import { compareCommentsCount } from './sort-filters.js';
+import { getRangeRandomPosts } from './sort-filters.js';
+import { initUploadPictureModule } from './upload-picture.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesList = document.querySelector('.pictures');
+
+const clearPosts = () => document.querySelectorAll('.picture').forEach((post) => post.remove());
 
 const createPicture = (data) => {
   const picture = pictureTemplate.cloneNode(true);
@@ -17,8 +22,17 @@ const createPicture = (data) => {
   return picture;
 };
 
-const renderPictures = (dataset) => {
-  dataset.forEach((data) => picturesList.append(createPicture(data)));
+const renderPictures = (dataset, isShuffled, isSorted) => {
+  let datasetCopy = dataset.slice();
+  if (isShuffled) {
+    datasetCopy = getRangeRandomPosts(datasetCopy);
+  }
+  if (isSorted) {
+    datasetCopy.sort(compareCommentsCount);
+  }
+  clearPosts();
+  initUploadPictureModule();
+  datasetCopy.forEach((data) => picturesList.append(createPicture(data)));
 };
 
 export { renderPictures };

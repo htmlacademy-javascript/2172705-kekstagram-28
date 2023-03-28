@@ -1,4 +1,4 @@
-const picturePreviewContainer = document.querySelector('.img-upload');
+const pictureUploadContainer = document.querySelector('.img-upload');
 
 const onMessageModalKeydown = (evt) => {
   evt.stopPropagation();
@@ -26,7 +26,7 @@ const createSuccessMessage = () => document.querySelector('#success').content.qu
 const createErrorMessage = () => document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 
 const showMessage = (messageBuilder, messageType) => {
-  picturePreviewContainer.append(messageBuilder());
+  pictureUploadContainer.append(messageBuilder());
   document.querySelector(`.${messageType}__button`).focus();
   addMessageListeners(messageType);
 };
