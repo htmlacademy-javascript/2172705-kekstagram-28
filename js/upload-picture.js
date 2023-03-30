@@ -1,8 +1,10 @@
 import { addScaleListeners } from './upload-picture-scale.js';
 import { createSlider, setupSlider, destroySlider } from './upload-picture-effects.js';
 import { addValidators, isValidForm, resetPristine, addEffectListener } from './upload-picture-validation.js';
-import { showMessage, createSuccessMessage, createErrorMessage } from './upload-picture-fetch-messages.js';
+import { renderSuccessMessage, renderErrorMessage } from './upload-picture-send-messages.js';
 import { sendData } from './server-data.js';
+
+const SEND_DATA_URI = 'https://28.javascript.pages.academy/kekstagram';
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
 const pictureUploadInput = document.querySelector('#upload-file');
@@ -14,20 +16,10 @@ const checkedEffectInput = document.querySelector('.effects__radio[checked]');
 
 const onUploadPictureFormSubmit = (evt) => {
   evt.preventDefault();
-
   if (isValidForm()) {
     blockSubmitButton();
-    sendData(new FormData(evt.target))
-      .then(() => {
-        showMessage(createSuccessMessage, 'success');
-        closePictureUpload();
-      })
-      .catch(() => {
-        showMessage(createErrorMessage, 'error');
-      })
-      .finally(() => unblockSubmitButton());
-  } else {
-    showMessage(createErrorMessage, 'error');
+    sendData(SEND_DATA_URI, renderSuccessMessage, renderErrorMessage, new FormData(evt.target));
+    unblockSubmitButton();
   }
 };
 
