@@ -3,6 +3,8 @@ const shuffleElements = (elements) => {
     const j = Math.floor(Math.random() * (i + 1));
     [elements[i], elements[j]] = [elements[j], elements[i]];
   }
+
+  return elements;
 };
 
 const debounce = (callback, timeoutDelay) => {
