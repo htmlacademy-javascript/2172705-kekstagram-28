@@ -1,5 +1,3 @@
-const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-
 const shuffleElements = (elements) => {
   for (let i = elements.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -16,4 +14,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export { getRandomInteger, shuffleElements, debounce };
+export { shuffleElements, debounce };
