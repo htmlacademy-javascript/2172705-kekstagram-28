@@ -1,5 +1,3 @@
-import { closePictureUpload } from './upload-picture.js';
-
 const onMessageModalKeydown = (evt) => {
   evt.stopPropagation();
   if (evt.key === 'Escape') {
@@ -27,7 +25,6 @@ const renderSuccessMessage = () => {
   document.body.append(createSuccessMessage());
   document.querySelector('.success__button').focus();
   addMessageListeners('success');
-  closePictureUpload();
 };
 
 const createErrorMessage = () => document.querySelector('#error').content.querySelector('.error').cloneNode(true);

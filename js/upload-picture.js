@@ -14,12 +14,22 @@ const submitButton = document.querySelector('.img-upload__submit');
 const closeButton = document.querySelector('.img-upload__cancel');
 const checkedEffectInput = document.querySelector('.effects__radio[checked]');
 
+const onSuccessSendData = () => {
+  renderSuccessMessage();
+  unblockSubmitButton();
+  closePictureUpload();
+};
+
+const onFailSendData = () => {
+  renderErrorMessage();
+  unblockSubmitButton();
+};
+
 const onUploadPictureFormSubmit = (evt) => {
   evt.preventDefault();
   if (isValidForm()) {
     blockSubmitButton();
-    sendData(SEND_DATA_URI, renderSuccessMessage, renderErrorMessage, new FormData(evt.target));
-    unblockSubmitButton();
+    sendData(SEND_DATA_URI, onSuccessSendData, onFailSendData, new FormData(evt.target));
   }
 };
 
@@ -75,4 +85,4 @@ const initUploadPictureModule = () => {
   addValidators();
 };
 
-export { initUploadPictureModule, closePictureUpload };
+export { initUploadPictureModule };
