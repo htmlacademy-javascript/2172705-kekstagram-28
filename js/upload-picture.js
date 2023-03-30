@@ -16,8 +16,8 @@ const checkedEffectInput = document.querySelector('.effects__radio[checked]');
 
 const onSuccessSendData = () => {
   renderSuccessMessage();
-  unblockSubmitButton();
   closePictureUpload();
+  unblockSubmitButton();
 };
 
 const onFailSendData = () => {
