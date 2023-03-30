@@ -1,5 +1,5 @@
 import { addScaleListeners } from './upload-picture-scale.js';
-import { createSlider, setupSlider, destroySlider } from './upload-picture-slider.js';
+import { createSlider, setupSlider, destroySlider } from './upload-picture-effects.js';
 import { addValidators, isValidForm, resetPristine, addEffectListener } from './upload-picture-validation.js';
 import { showMessage, createSuccessMessage, createErrorMessage } from './upload-picture-fetch-messages.js';
 import { sendData } from './server-data.js';

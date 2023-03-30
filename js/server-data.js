@@ -4,7 +4,6 @@ const getData = (address, onSuccess, onFail) => {
       if (response.ok) {
         return response.json();
       }
-
       throw new Error();
     })
     .then((data) => onSuccess(data))
@@ -20,10 +19,9 @@ const sendData = (address, onSuccess, onFail, body) => {
       if (response.ok) {
         return response.json();
       }
-
       throw new Error();
     })
-    .then((data) => onSuccess(data))
+    .then(() => onSuccess())
     .catch(() => onFail());
 };
 
