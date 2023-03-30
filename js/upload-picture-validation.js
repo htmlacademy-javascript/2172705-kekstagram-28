@@ -1,6 +1,5 @@
-const HASHTAG_REG_EXP = /^#[\dа-яa-z]{1,19}\s/gi;
+const HASHTAG_REG_EXP = /^#[\dа-яa-z]{1,19}\s/i;
 const MAX_HASHTAGS_COUNT = 5;
-const MAX_HASHTAG_DUPLICATES_COUNT = 0;
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = document.querySelector('.img-upload__text .text__hashtags');
@@ -12,25 +11,48 @@ const pristineSetup = new Pristine(pictureUploadForm, {
   errorTextClass: 'form__error'
 });
 
-const checkHashtags = () => {
-  const hashtagString = hashtagInput.value.trim();
+const createHashtagArray = (value) => value.trim().split(' ').filter((item) => item);
 
-  if (!hashtagInput.value) {
+const isValidHashtagText = (value) => {
+  if (!value) {
     return true;
   }
 
-  if (`${hashtagString} `.replace(HASHTAG_REG_EXP, '') ||
-    hashtagString.split(' ').length > MAX_HASHTAGS_COUNT ||
-    findDuplicates(hashtagString.toLowerCase().split(' ')).length !== MAX_HASHTAG_DUPLICATES_COUNT) {
-
-    return false;
-  }
-
-  return true;
+  return createHashtagArray(value).every((hashtag) => HASHTAG_REG_EXP.test(hashtag));
 };
 
-pristineSetup.addValidator(hashtagInput, checkHashtags, 'Поле заполнено неверно');
+const isUniqueHashtags = (value) => {
+  const hashtags = createHashtagArray(value);
+  const uniqueHashtags = new Set(hashtags);
 
-const validateUploadPictureForm = () => pristineSetup.validate();
+  return hashtags.length === uniqueHashtags.size;
+};
 
-export { validateUploadPictureForm };
+const isValidHashtagsCount = (value) => createHashtagArray(value).length <= MAX_HASHTAGS_COUNT;
+
+const addValidators = () => {
+  pristineSetup.addValidator(
+    hashtagInput,
+    isValidHashtagText,
+    `Хэш-тег начинается с символа # (решётка), хеш-тег не может состоять только из одной решётки, максимальная длина одного хэш-тега 20 символов, включая решётку;
+    строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы, символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.!`
+  );
+
+  pristineSetup.addValidator(
+    hashtagInput,
+    isUniqueHashtags,
+    'Один и тот же хэш-тег не может быть использован дважды! (#ХэшТег и #хэштег считаются одним и тем же тегом)'
+  );
+
+  pristineSetup.addValidator(
+    hashtagInput,
+    isValidHashtagsCount,
+    'Нельзя указать больше пяти хэш-тегов!'
+  );
+};
+
+const isValidForm = () => pristineSetup.validate();
+
+const resetPristine = () => pristineSetup.reset();
+
+export { addValidators, isValidForm, resetPristine };
