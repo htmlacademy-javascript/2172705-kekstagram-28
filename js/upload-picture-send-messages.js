@@ -1,3 +1,5 @@
+import { closePictureUpload } from './upload-picture.js';
+
 const onMessageModalKeydown = (evt) => {
   evt.stopPropagation();
   if (evt.key === 'Escape') {
@@ -21,18 +23,19 @@ const addMessageListeners = (type) => {
 
 const createSuccessMessage = () => document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 
-const createErrorMessage = () => document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-
 const renderSuccessMessage = () => {
   document.body.append(createSuccessMessage());
   document.querySelector('.success__button').focus();
-  addMessageListeners('.success');
+  addMessageListeners('success');
+  closePictureUpload();
 };
+
+const createErrorMessage = () => document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 
 const renderErrorMessage = () => {
   document.body.append(createErrorMessage());
   document.querySelector('.error__button').focus();
-  addMessageListeners('.error');
+  addMessageListeners('error');
 };
 
 function closeMessage() {

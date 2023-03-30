@@ -43,6 +43,6 @@ const onFailGetData = () => {
   setTimeout(() => errorMessage.remove(), ERROR_MESSAGE_SHOW_TIME);
 };
 
-const getPostsData = getData(GET_DATA_URI, onSuccessGetData, onFailGetData);
+const getPostsData = () => getData(GET_DATA_URI, onSuccessGetData, onFailGetData);
 
 export { getPostsData };

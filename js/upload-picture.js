@@ -1,6 +1,6 @@
 import { addScaleListeners } from './upload-picture-scale.js';
-import { createSlider, setupSlider, destroySlider } from './upload-picture-effects.js';
-import { addValidators, isValidForm, resetPristine, addEffectListener } from './upload-picture-validation.js';
+import { createSlider, setupSlider, destroySlider, addEffectListener} from './upload-picture-effects.js';
+import { addValidators, isValidForm, resetPristine } from './upload-picture-validation.js';
 import { renderSuccessMessage, renderErrorMessage } from './upload-picture-send-messages.js';
 import { sendData } from './server-data.js';
 
@@ -75,4 +75,4 @@ const initUploadPictureModule = () => {
   addValidators();
 };
 
-export { initUploadPictureModule };
+export { initUploadPictureModule, closePictureUpload };

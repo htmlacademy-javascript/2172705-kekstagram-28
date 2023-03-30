@@ -1,4 +1,4 @@
-const HASHTAG_REG_EXP = /^#[\dа-яa-z]{1,19}\s/i;
+const HASHTAG_REG_EXP = /^#[\dа-яёa-z]{1,19}$/i;
 const MAX_HASHTAGS_COUNT = 5;
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
@@ -41,7 +41,7 @@ const addValidators = () => {
   pristineSetup.addValidator(
     hashtagInput,
     isUniqueHashtags,
-    'Один и тот же хэш-тег не может быть использован дважды! (#ХэшТег и #хэштег считаются одним и тем же тегом)'
+    'Один и тот же хэш-тег не может быть использован дважды! (хэш-теги нечувствительны к регистру)'
   );
 
   pristineSetup.addValidator(
