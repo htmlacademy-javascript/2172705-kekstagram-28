@@ -11,7 +11,7 @@ const pristineSetup = new Pristine(pictureUploadForm, {
   errorTextClass: 'form__error'
 });
 
-const createHashtagArray = (value) => value.trim().split(' ').filter((item) => item);
+const createHashtagArray = (value) => value.toLowerCase().trim().split(' ').filter((item) => item);
 
 const isValidHashtagText = (value) => {
   if (!value) {
