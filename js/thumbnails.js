@@ -2,7 +2,7 @@ import { openBigPicture } from './big-picture.js';
 import { initSortFiltersModule } from './sort-filters.js';
 import { getData } from './server-data.js';
 
-const GET_DATA_URI = 'https://28.javascript.pages.academy/kekstagram/data';
+const GET_DATA_URL = 'https://28.javascript.pages.academy/kekstagram/data';
 const ERROR_MESSAGE_SHOW_TIME = 5000;
 
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -47,6 +47,6 @@ const onFailGetData = () => {
   setTimeout(() => errorMessage.remove(), ERROR_MESSAGE_SHOW_TIME);
 };
 
-const getPostsData = () => getData(GET_DATA_URI, onSuccessGetData, onFailGetData);
+const getPostsData = () => getData(GET_DATA_URL, onSuccessGetData, onFailGetData);
 
 export { getPostsData, renderThumbnails };

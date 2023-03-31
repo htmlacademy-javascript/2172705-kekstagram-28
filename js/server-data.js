@@ -1,5 +1,5 @@
-const getData = (address, onSuccess, onFail) => {
-  fetch(address)
+const getData = (url, onSuccess, onFail) => {
+  fetch(url)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -10,8 +10,8 @@ const getData = (address, onSuccess, onFail) => {
     .catch(() => onFail());
 };
 
-const sendData = (address, onSuccess, onFail, body) => {
-  fetch(address, {
+const sendData = (url, onSuccess, onFail, body) => {
+  fetch(url, {
     method: 'POST',
     body
   })

@@ -4,7 +4,7 @@ import { addValidators, isValidForm, resetPristine } from './upload-picture-vali
 import { renderSuccessMessage, renderErrorMessage } from './upload-picture-send-messages.js';
 import { sendData } from './server-data.js';
 
-const SEND_DATA_URI = 'https://28.javascript.pages.academy/kekstagram';
+const SEND_DATA_URL = 'https://28.javascript.pages.academy/kekstagram';
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
 const pictureUploadInput = document.querySelector('#upload-file');
@@ -29,7 +29,7 @@ const onUploadPictureFormSubmit = (evt) => {
   evt.preventDefault();
   if (isValidForm()) {
     blockSubmitButton();
-    sendData(SEND_DATA_URI, onSuccessSendData, onFailSendData, new FormData(evt.target));
+    sendData(SEND_DATA_URL, onSuccessSendData, onFailSendData, new FormData(evt.target));
   }
 };
 
