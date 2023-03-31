@@ -1,4 +1,5 @@
 import { openBigPicture } from './big-picture.js';
+import { initSortFiltersModule } from './sort-filters.js';
 import { getData } from './server-data.js';
 
 const GET_DATA_URI = 'https://28.javascript.pages.academy/kekstagram/data';
@@ -21,9 +22,12 @@ const createThumbnail = (data) => {
   return thumbnail;
 };
 
-const renderPictures = (data) => data.forEach((item) => thumbnailsList.append(createThumbnail(item)));
+const renderThumbnails = (data) => data.forEach((item) => thumbnailsList.append(createThumbnail(item)));
 
-const onSuccessGetData = (data) => renderPictures(data);
+const onSuccessGetData = (data) => {
+  renderThumbnails(data);
+  initSortFiltersModule(data);
+};
 
 const onFailGetData = () => {
   const errorMessage = document.createElement('div');
@@ -45,4 +49,4 @@ const onFailGetData = () => {
 
 const getPostsData = () => getData(GET_DATA_URI, onSuccessGetData, onFailGetData);
 
-export { getPostsData };
+export { getPostsData, renderThumbnails };

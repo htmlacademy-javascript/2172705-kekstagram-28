@@ -1,49 +1,40 @@
-// import { shuffleElements } from './utils.js';
+import { renderThumbnails } from './thumbnails.js';
+import { removeElements, shuffleElements, debounce } from './utils.js';
 
-// const POSTS_COUNT = 10;
+const RANDOM_THUMBNAILS_COUNT = 10;
+const RERENDER_DELAY = 500;
 
-// const sortingFiltersContainer = document.querySelector('.img-filters');
-// const defaultFilterButton = document.querySelector('#filter-default');
-// const randomFilterButton = document.querySelector('#filter-random');
-// const discussedFilterButton = document.querySelector('#filter-discussed');
+const thumbnailsFilter = document.querySelector('.img-filters');
 
-// const removeButtonActiveClass = () => document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+const sortDescThumbnails = (first, second) => second.comments.length - first.comments.length;
 
-// const getDefaultPostsView = (callback) => {
-//   defaultFilterButton.addEventListener('click', () => {
-//     removeButtonActiveClass();
-//     defaultFilterButton.classList.add('img-filters__button--active');
-//     callback();
-//   });
-// };
+const rerenderThumbnails = (data, id) => {
+  removeElements(document.querySelectorAll('.picture'));
 
-// const getRandomPostsView = (callback) => {
-//   randomFilterButton.addEventListener('click', () => {
-//     removeButtonActiveClass();
-//     randomFilterButton.classList.add('img-filters__button--active');
-//     callback();
-//   });
-// };
+  let dataCopy = data.slice();
+  if (id === 'filter-random') {
+    dataCopy = shuffleElements(dataCopy).slice(0, RANDOM_THUMBNAILS_COUNT);
+  }
+  if (id === 'filter-discussed') {
+    dataCopy.sort(sortDescThumbnails);
+  }
 
-// const getDiscussedPostsView = (callback) => {
-//   discussedFilterButton.addEventListener('click', () => {
-//     removeButtonActiveClass();
-//     discussedFilterButton.classList.add('img-filters__button--active');
-//     callback();
-//   });
-// };
+  renderThumbnails(dataCopy);
+};
 
-// const compareCommentsCount = (first, second) => second.comments.length - first.comments.length;
+const rerenderTimeout = debounce((data, id) => rerenderThumbnails(data, id), RERENDER_DELAY);
 
-// const getRangeRandomPosts = (elements) => {
-//   const posts = elements.slice();
-//   shuffleElements(posts);
+const onThumbnailsFilterClick = (evt, data) => {
+  if (evt.target.closest('.img-filters__button') && !evt.target.closest('.img-filters__button--active')) {
+    document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+    evt.target.classList.add('img-filters__button--active');
+    rerenderTimeout(data, evt.target.id);
+  }
+};
 
-//   return posts.slice(0, POSTS_COUNT);
-// };
+const initSortFiltersModule = (data) => {
+  thumbnailsFilter.classList.remove('img-filters--inactive');
+  thumbnailsFilter.addEventListener('click', (evt) => onThumbnailsFilterClick(evt, data));
+};
 
-// const initSortModule = () => {
-//   sortingFiltersContainer.classList.remove('img-filters--inactive');
-// };
-
-// export { initSortModule, getRangeRandomPosts, getDefaultPostsView, getRandomPostsView, getDiscussedPostsView, compareCommentsCount };
+export { initSortFiltersModule };
