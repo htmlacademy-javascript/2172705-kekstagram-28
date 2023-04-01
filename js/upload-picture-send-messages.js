@@ -1,5 +1,3 @@
-const picturePreviewContainer = document.querySelector('.img-upload');
-
 const onMessageModalKeydown = (evt) => {
   evt.stopPropagation();
   if (evt.key === 'Escape') {
@@ -8,7 +6,7 @@ const onMessageModalKeydown = (evt) => {
 };
 
 const onMessageModalClick = (evt) => {
-  if (!evt.target.closest('.success__inner')) {
+  if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
     closeMessage();
   }
 };
@@ -23,12 +21,18 @@ const addMessageListeners = (type) => {
 
 const createSuccessMessage = () => document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 
+const renderSuccessMessage = () => {
+  document.body.append(createSuccessMessage());
+  document.querySelector('.success__button').focus();
+  addMessageListeners('success');
+};
+
 const createErrorMessage = () => document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 
-const showMessage = (messageBuilder, messageType) => {
-  picturePreviewContainer.append(messageBuilder());
-  document.querySelector(`.${messageType}__button`).focus();
-  addMessageListeners(messageType);
+const renderErrorMessage = () => {
+  document.body.append(createErrorMessage());
+  document.querySelector('.error__button').focus();
+  addMessageListeners('error');
 };
 
 function closeMessage() {
@@ -40,4 +44,4 @@ function closeMessage() {
   }
 }
 
-export { showMessage, createSuccessMessage, createErrorMessage };
+export { renderSuccessMessage, renderErrorMessage };

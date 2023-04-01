@@ -1,4 +1,4 @@
-const effectSetups = {
+const EffectSetups = {
   CHROME: {
     range: {
       min: 0,
@@ -46,13 +46,29 @@ const effectSetups = {
   }
 };
 
+const DefaultSliderValues = {
+  MIN: 0,
+  MAX: 0,
+  CONNECT: 'lower'
+};
+
 const DEFAULT_EFFECT_VALUE = 100;
 
 const pictureUploadPreview = document.querySelector('.img-upload__preview img');
-
 const effectLevelSliderContainer = document.querySelector('.img-upload__effect-level');
 const effectLevelInput = document.querySelector('.effect-level__value');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectsList = document.querySelector('.effects__list');
+
+const onEffectInputClick = (evt) => {
+  if (evt.target.closest('.effects__radio')) {
+    setupSlider(evt.target.value);
+  }
+};
+
+const addEffectListener = () => {
+  effectsList.addEventListener('change', onEffectInputClick);
+};
 
 const updateSlider = (effect) => {
   effectLevelSlider.noUiSlider.updateOptions({
@@ -65,34 +81,32 @@ const updateSlider = (effect) => {
   });
 };
 
-const setupSlider = (effect) => {
+function setupSlider (effect) {
   if (effect === 'none') {
     pictureUploadPreview.style.filter = null;
-    effectLevelSlider.noUiSlider.off();
     effectLevelSliderContainer.classList.add('hidden');
   } else {
-    updateSlider(effectSetups[effect.toUpperCase()]);
-
+    updateSlider(EffectSetups[effect.toUpperCase()]);
+    effectLevelSliderContainer.classList.remove('hidden');
     effectLevelSlider.noUiSlider.off();
     effectLevelSlider.noUiSlider.on('update', () => {
       effectLevelInput.value = effectLevelSlider.noUiSlider.get();
-      pictureUploadPreview.style.filter = `${effectSetups[effect.toUpperCase()].filter}(${effectLevelInput.value + effectSetups[effect.toUpperCase()].unit})`;
+      pictureUploadPreview.style.filter = `${EffectSetups[effect.toUpperCase()].filter}(${effectLevelInput.value + EffectSetups[effect.toUpperCase()].unit})`;
     });
-
-    effectLevelSliderContainer.classList.remove('hidden');
   }
-};
+}
 
 const createSlider = () => {
   noUiSlider.create(effectLevelSlider, {
     range: {
-      min: 0,
-      max: 100,
+      min: DefaultSliderValues.MIN,
+      max: DefaultSliderValues.MAX,
     },
     start: DEFAULT_EFFECT_VALUE,
+    connect: DefaultSliderValues.CONNECT
   });
 };
 
 const destroySlider = () => effectLevelSlider.noUiSlider.destroy();
 
-export { createSlider, setupSlider, destroySlider };
+export { createSlider, setupSlider, destroySlider, addEffectListener };

@@ -1,7 +1,10 @@
-import { validateUploadPictureForm } from './upload-picture-validation.js';
-import { createSlider, setupSlider, destroySlider } from './upload-picture-slider.js';
-import { showMessage, createSuccessMessage, createErrorMessage } from './upload-picture-fetch-messages.js';
+import { addScaleListeners } from './upload-picture-scale.js';
+import { createSlider, setupSlider, destroySlider, addEffectListener} from './upload-picture-effects.js';
+import { addValidators, isValidForm, resetPristine } from './upload-picture-validation.js';
+import { renderSuccessMessage, renderErrorMessage } from './upload-picture-send-messages.js';
 import { sendData } from './server-data.js';
+
+const SEND_DATA_URL = 'https://28.javascript.pages.academy/kekstagram';
 
 const pictureUploadForm = document.querySelector('.img-upload__form');
 const pictureUploadInput = document.querySelector('#upload-file');
@@ -9,53 +12,24 @@ const pictureUploadPreview = document.querySelector('.img-upload__preview img');
 const pictureEdit = document.querySelector('.img-upload__overlay');
 const submitButton = document.querySelector('.img-upload__submit');
 const closeButton = document.querySelector('.img-upload__cancel');
-
-const effectsList = document.querySelector('.effects__list');
 const checkedEffectInput = document.querySelector('.effects__radio[checked]');
 
-const pictureScaleInput = document.querySelector('.scale__control--value');
-const pictureScaleDownButton = document.querySelector('.scale__control--smaller');
-const pictureScaleUpButton = document.querySelector('.scale__control--bigger');
+const onSuccessSendData = () => {
+  renderSuccessMessage();
+  closePictureUpload();
+  unblockSubmitButton();
+};
+
+const onFailSendData = () => {
+  renderErrorMessage();
+  unblockSubmitButton();
+};
 
 const onUploadPictureFormSubmit = (evt) => {
   evt.preventDefault();
-
-  if (validateUploadPictureForm()) {
+  if (isValidForm()) {
     blockSubmitButton();
-    sendData(new FormData(evt.target))
-      .then(() => {
-        showMessage(createSuccessMessage, 'success');
-        closePictureUpload();
-      })
-      .catch(() => {
-        showMessage(createErrorMessage, 'error');
-      })
-      .finally(() => unblockSubmitButton());
-  } else {
-    showMessage(createErrorMessage, 'error');
-  }
-};
-
-const onScaleDownButtonClick = () => {
-  if (parseInt(pictureScaleInput.value, 10) > 25) {
-    pictureScaleInput.value = `${parseInt(pictureScaleInput.value, 10) - 25}%`;
-    pictureUploadPreview.style.transform = `scale(${parseInt(pictureScaleInput.value, 10) / 100})`;
-  }
-};
-
-const onScaleUpButtonClick = () => {
-  if (parseInt(pictureScaleInput.value, 10) < 100) {
-    pictureScaleInput.value = `${parseInt(pictureScaleInput.value, 10) + 25}%`;
-    pictureUploadPreview.style.transform = `scale(${parseInt(pictureScaleInput.value, 10) / 100})`;
-  }
-};
-
-const onEffectInputClick = (evt) => {
-  if (evt.target.closest('.effects__radio')) {
-    pictureUploadPreview.className = '';
-    pictureUploadPreview.classList.add(`effects__preview--${evt.target.value}`);
-
-    setupSlider(evt.target.value);
+    sendData(SEND_DATA_URL, onSuccessSendData, onFailSendData, new FormData(evt.target));
   }
 };
 
@@ -67,22 +41,10 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const addListeners = () => {
+const addFormBaseListeners = () => {
   pictureUploadForm.addEventListener('submit', onUploadPictureFormSubmit);
-  pictureScaleDownButton.addEventListener('click', onScaleDownButtonClick);
-  pictureScaleUpButton.addEventListener('click', onScaleUpButtonClick);
-  effectsList.addEventListener('change', onEffectInputClick);
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
-};
-
-const removeListeners = () => {
-  pictureUploadForm.removeEventListener('submit', onUploadPictureFormSubmit);
-  pictureScaleDownButton.removeEventListener('click', onScaleDownButtonClick);
-  pictureScaleUpButton.removeEventListener('click', onScaleUpButtonClick);
-  effectsList.removeEventListener('change', onEffectInputClick);
-  closeButton.removeEventListener('click', onCloseButtonClick);
-  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 function blockSubmitButton() {
@@ -98,31 +60,29 @@ function unblockSubmitButton() {
 function defaultSetupPictureUpload() {
   pictureUploadForm.reset();
   pictureUploadPreview.style = null;
-  pictureUploadPreview.className = 'effects__preview--none';
-  pictureScaleInput.defaultValue = '100%';
 }
 
 function openPictureUpload() {
-  addListeners();
   createSlider();
   setupSlider(checkedEffectInput.value);
-
   document.body.classList.add('modal-open');
   pictureEdit.classList.remove('hidden');
 }
 
 function closePictureUpload() {
-  removeListeners();
   destroySlider();
+  resetPristine();
   defaultSetupPictureUpload();
-
   document.body.classList.remove('modal-open');
   pictureEdit.classList.add('hidden');
 }
 
 const initUploadPictureModule = () => {
   pictureUploadInput.addEventListener('change', openPictureUpload);
-  defaultSetupPictureUpload();
+  addFormBaseListeners();
+  addScaleListeners();
+  addEffectListener();
+  addValidators();
 };
 
 export { initUploadPictureModule };

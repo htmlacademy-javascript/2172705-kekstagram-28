@@ -14,7 +14,7 @@ const commentsLoader = document.querySelector('.comments-loader');
 
 let commentsCounter = 0;
 let totalCommentsQuantity = 0;
-let commentsDataset = [];
+let commentsData = [];
 
 const onCloseButtonClick = () => {
   closeBigPicture();
@@ -22,46 +22,48 @@ const onCloseButtonClick = () => {
 
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape' && !evt.target.closest('.social__footer-text')) {
+    evt.preventDefault();
     closeBigPicture();
   }
 };
 
 const onCommentsLoaderButtonClick = () => {
-  if (commentsDataset.length <= COMMENTS_STEP_VALUE) {
+  if (commentsData.length <= COMMENTS_STEP_VALUE) {
     commentsLoader.classList.add('hidden');
   }
-
   renderComments();
 };
 
 const addListeners = () => {
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
-
   commentsLoader.addEventListener('click', onCommentsLoaderButtonClick);
 };
 
 const removeListeners = () => {
   closeButton.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
-
   commentsLoader.removeEventListener('click', onCommentsLoaderButtonClick);
 };
 
+function fillCommentsCount() {
+  commentsContainer.innerHTML = `${commentsCounter} из <span class="comments-count">${totalCommentsQuantity}</span> комментариев`;
+}
+
 const createComment = (data) => {
   const newComment = commentItem.cloneNode(true);
-  newComment.querySelector('.social__picture').src = data.avatar;
-  newComment.querySelector('.social__picture').alt = data.name;
+  const commentAvatar = newComment.querySelector('.social__picture');
+  commentAvatar.src = data.avatar;
+  commentAvatar.alt = data.name;
   newComment.querySelector('.social__text').textContent = data.message;
-
   commentsCounter++;
 
   return newComment;
 };
 
 function renderComments() {
-  commentsDataset.splice(0, COMMENTS_STEP_VALUE).forEach((item) => commentsList.append(createComment(item)));
-  commentsContainer.innerHTML = `${commentsCounter} из <span class="comments-count">${totalCommentsQuantity}</span> комментариев`;
+  commentsData.splice(0, COMMENTS_STEP_VALUE).forEach((item) => commentsList.append(createComment(item)));
+  fillCommentsCount();
 }
 
 const fillBigPicture = (data) => {
@@ -73,10 +75,8 @@ const fillBigPicture = (data) => {
 
 const openBigPicture = (data) => {
   commentsList.innerHTML = '';
-
   totalCommentsQuantity = data.comments.length;
-  commentsDataset.push(...data.comments.slice());
-
+  commentsData.push(...data.comments.slice());
   pictureContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
@@ -93,11 +93,9 @@ function closeBigPicture() {
   pictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
   commentsLoader.classList.remove('hidden');
-
   commentsCounter = 0;
   totalCommentsQuantity = 0;
-  commentsDataset = [];
-
+  commentsData = [];
   removeListeners();
 }
 

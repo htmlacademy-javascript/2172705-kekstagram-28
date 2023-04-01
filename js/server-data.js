@@ -1,14 +1,28 @@
-const URL = 'https://28.javascript.pages.academy';
-
-const URNs = {
-  GET_DATA: '/kekstagram/data',
-  SEND_DATA: '/kekstagram'
+const getData = (url, onSuccess, onFail) => {
+  fetch(url)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error();
+    })
+    .then((data) => onSuccess(data))
+    .catch(() => onFail());
 };
 
-const processResponse = (url, method, body = null) => fetch(url, { method: method, body: body }).then((response) => response.json());
-
-const getData = () => processResponse(`${URL + URNs.GET_DATA}`, 'GET');
-
-const sendData = (body) => processResponse(`${URL + URNs.SEND_DATA}`, 'POST', body);
+const sendData = (url, onSuccess, onFail, body) => {
+  fetch(url, {
+    method: 'POST',
+    body
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error();
+    })
+    .then(() => onSuccess())
+    .catch(() => onFail());
+};
 
 export { getData, sendData };
