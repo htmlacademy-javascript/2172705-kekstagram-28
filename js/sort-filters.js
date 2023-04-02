@@ -3,6 +3,8 @@ import { removeElements, shuffleElements, debounce } from './utils.js';
 
 const RANDOM_THUMBNAILS_COUNT = 10;
 const RERENDER_DELAY = 500;
+const RANDOM_THUMBNAILS_BUTTON_ID = 'filter-random';
+const DISCUSSED_THUMBNAILS_BUTTON_ID = 'filter-discussed';
 
 const thumbnailsFilter = document.querySelector('.img-filters');
 
@@ -12,10 +14,10 @@ const rerenderThumbnails = (data, id) => {
   removeElements(document.querySelectorAll('.picture'));
 
   let dataCopy = data.slice();
-  if (id === 'filter-random') {
+  if (id === RANDOM_THUMBNAILS_BUTTON_ID) {
     dataCopy = shuffleElements(dataCopy).slice(0, RANDOM_THUMBNAILS_COUNT);
   }
-  if (id === 'filter-discussed') {
+  if (id === DISCUSSED_THUMBNAILS_BUTTON_ID) {
     dataCopy.sort(sortDescThumbnails);
   }
 

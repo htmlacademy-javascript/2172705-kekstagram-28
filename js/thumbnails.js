@@ -4,6 +4,7 @@ import { getData } from './server-data.js';
 
 const GET_DATA_URL = 'https://28.javascript.pages.academy/kekstagram/data';
 const ERROR_MESSAGE_SHOW_TIME = 5000;
+const ERROR_MESSAGE = 'Не удалось загрузить данные!';
 
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const thumbnailsList = document.querySelector('.pictures');
@@ -40,7 +41,7 @@ const onFailGetData = () => {
   errorMessage.style.fontSize = '20px';
   errorMessage.style.textAlign = 'center';
   errorMessage.style.backgroundColor = 'red';
-  errorMessage.textContent = 'Не удалось загрузить данные!';
+  errorMessage.textContent = ERROR_MESSAGE;
 
   document.body.append(errorMessage);
 
