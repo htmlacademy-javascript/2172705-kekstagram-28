@@ -65,6 +65,7 @@ function defaultSetupPictureUpload() {
 function openPictureUpload() {
   createSlider();
   setupSlider(checkedEffectInput.value);
+  pictureUploadPreview.src = URL.createObjectURL(pictureUploadInput.files[0]);
   document.body.classList.add('modal-open');
   pictureEdit.classList.remove('hidden');
 }
